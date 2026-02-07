@@ -10,7 +10,10 @@ No database is used
 
 APIs are tested using Postman
 
-🛠 Technologies Used
+**Live Demo**
+Render Live Demo Link: https://item-api-e0xy.onrender.com/
+
+**🛠 Technologies Used**
 
 Java 21
 
@@ -123,7 +126,7 @@ src/main/java/com/example/itemapi
 ├── repository   → In-memory ArrayList storage
 ├── service      → Business logic
 └── ItemApiApplication.java
-🧪 Tools Used for Testing
+**🧪 Tools Used for Testing**
 
 Postman for API testing
 
