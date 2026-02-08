@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Item Management App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        body {
+          font-family: Arial, Helvetica, sans-serif;
+          background: linear-gradient(135deg, #667eea, #764ba2);
+          margin: 0;
+          padding: 0;
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .container {
+          background: #fff;
+          width: 100%;
+          max-width: 500px;
+          border-radius: 12px;
+          padding: 25px;
+          box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+          color: #333;
+        }
+
+        h2 {
+          margin-top: 25px;
+          color: #444;
+          font-size: 18px;
+        }
+
+        input {
+          width: 100%;
+          padding: 10px;
+          margin: 8px 0;
+          border-radius: 6px;
+          border: 1px solid #ccc;
+          font-size: 14px;
+        }
+
+        button {
+          width: 100%;
+          padding: 10px;
+          background: #667eea;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-size: 15px;
+          cursor: pointer;
+          margin-top: 10px;
+        }
+
+        button:hover {
+          background: #556cd6;
+        }
+
+        .result {
+          margin-top: 15px;
+          padding: 10px;
+          background: #f4f4f4;
+          border-radius: 6px;
+          font-size: 14px;
+          white-space: pre-wrap;
+        }
+
+        footer {
+          text-align: center;
+          margin-top: 20px;
+          font-size: 12px;
+          color: #777;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Item Management</h1>
+
+    <!-- Add Item -->
+    <h2>Add New Item</h2>
+    <input type="text" id="name" placeholder="Item Name" />
+    <input type="text" id="description" placeholder="Item Description" />
+    <input type="number" id="price" placeholder="Price" />
+    <button onclick="addItem()">Add Item</button>
+
+    <!-- Get Item -->
+    <h2>Get Item by ID</h2>
+    <input type="number" id="itemId" placeholder="Enter Item ID" />
+    <button onclick="getItem()">Get Item</button>
+
+    <div class="result" id="result">Response will appear here...</div>
+
+    <footer>
+        Java Spring Boot Backend + Simple UI Demo
+    </footer>
+</div>
+
+<script>
+    const API_BASE_URL = "https://item-api-e0xy.onrender.com";
+
+   function addItem() {
+  const name = document.getElementById("name").value;
+  const description = document.getElementById("description").value;
+  const price = Number(document.getElementById("price").value);
+
+  fetch(`${API_BASE_URL}/api/items`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ name, description, price })
+  })
+  .then(async res => {
+    const text = await res.text();
+    if (!res.ok) throw new Error(text);
+    return JSON.parse(text);
+  })
+  .then(data => {
+    document.getElementById("result").textContent =
+      "Item Added Successfully:\n" + JSON.stringify(data, null, 2);
+  })
+  .catch(err => {
+    document.getElementById("result").textContent =
+      "Error: " + err.message;
+  });
+}
+
+    function getItem() {
+      const id = document.getElementById("itemId").value;
+
+      fetch(`${API_BASE_URL}/api/items/${id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Item not found");
+          return res.json();
+        })
+        .then(data => {
+          document.getElementById("result").textContent =
+            "Item Details:\n" + JSON.stringify(data, null, 2);
+        })
+        .catch(err => {
+          document.getElementById("result").textContent =
+            "Item not found";
+        });
+    }
+</script>
+
+</body>
+</html>
