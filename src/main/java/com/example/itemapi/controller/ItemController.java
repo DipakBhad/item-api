@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/items")
+@CrossOrigin(origins = "*")
 public class ItemController {
 
     private final ItemService service;
@@ -16,14 +17,12 @@ public class ItemController {
         this.service = service;
     }
 
-    // Add new item
     @PostMapping
     public ResponseEntity<Item> addItem(@Valid @RequestBody Item item) {
         Item savedItem = service.addItem(item);
         return ResponseEntity.ok(savedItem);
     }
 
-    // Get item by ID
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItemById(@PathVariable Long id) {
         return service.getItemById(id)
